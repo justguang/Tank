@@ -26,8 +26,8 @@ public class EnemyTank extends Tank implements Runnable {
         super(x, y);
     }
 
-    public EnemyTank(int x, int y, int speed) {
-        super(x, y, speed);
+    public EnemyTank(int x, int y, int direction) {
+        super(x, y, direction);
     }
 
 
@@ -47,15 +47,16 @@ public class EnemyTank extends Tank implements Runnable {
                 //向上
                 case 0:
                     for (int i = 0; i < 30; i++) {
-                        moveUp();
-                        //发射子弹
-                        enemyTankShot();
                         //休眠一下
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(80);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        //向上移动
+                        moveUp();
+                        //发射子弹
+                        enemyTankShot();
                     }
 
                     break;
@@ -63,15 +64,17 @@ public class EnemyTank extends Tank implements Runnable {
                 //向下
                 case 1:
                     for (int i = 0; i < 30; i++) {
-                        moveDown();
-                        //发射子弹
-                        enemyTankShot();
                         //休眠一下
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(80);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
+                        //向下移动
+                        moveDown();
+                        //发射子弹
+                        enemyTankShot();
                     }
 
                     break;
@@ -79,15 +82,17 @@ public class EnemyTank extends Tank implements Runnable {
                 //向左
                 case 2:
                     for (int i = 0; i < 30; i++) {
-                        moveLeft();
-                        //发射子弹
-                        enemyTankShot();
                         //休眠一下
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(80);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
+                        //向左移动
+                        moveLeft();
+                        //发射子弹
+                        enemyTankShot();
                     }
 
                     break;
@@ -95,15 +100,17 @@ public class EnemyTank extends Tank implements Runnable {
                 //向右
                 case 3:
                     for (int i = 0; i < 30; i++) {
-                        moveRight();
-                        //发射子弹
-                        enemyTankShot();
                         //休眠一下
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(80);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
+                        //向右移动
+                        moveRight();
+                        //发射子弹
+                        enemyTankShot();
                     }
 
                     break;

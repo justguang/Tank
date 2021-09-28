@@ -17,12 +17,11 @@ public class CustomTank extends Tank {
 
     public CustomTank(int x, int y) {
         super(x, y);
-        //setSpeed(3);
     }
 
 
-    public CustomTank(int x, int y, int speed) {
-        super(x, y, speed);
+    public CustomTank(int x, int y, int direction) {
+        super(x, y, direction);
     }
 
     /**

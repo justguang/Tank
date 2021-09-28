@@ -20,38 +20,93 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     //定义敌人坦克
     public static Vector<EnemyTank> enemyTanks = new Vector<>();
 
-    //定义敌人数量
-    int enemyTankNum = 3;
+    //定义敌人数量【默认4架坦克】
+    public static int enemyTankNum = 4;
 
     //存放炸弹集合
     Vector<Bomb> bombs = new Vector<>();
 
     //定义三张爆炸效果图片
-    Image bombImg1 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/static/1.png"));
-    Image bombImg2 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/static/2.png"));
-    Image bombImg3 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/static/3.png"));
+    Image bombImg1 = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/static/1.png"));
+    Image bombImg2 = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/static/2.png"));
+    Image bombImg3 = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/static/3.png"));
+
+    {
+        //加载战斗记录
+        BattleInfo.checkBattleRecordFileExists();
+        BattleInfo.loadBattleRecord();
+    }
+
+    public MyPanel(String key) {
+        //key=> 1开始新游戏，
+        if (key.equals("1")) {
+            myTank = null;
+            enemyTankNum = 4;
+            enemyTanks.clear();
+        }
 
 
-    public MyPanel() {
-        //初始化玩家的坦克
-        myTank = new CustomTank(500, 600);
+        if (myTank == null) {
+            //如果玩家坦克为空，创建玩家的坦克
+            myTank = new CustomTank(500, 600);
+        }
         //设置玩家的坦克移速
-        myTank.setSpeed(3);
+        myTank.setSpeed(6);
 
-        //初始化敌人坦克
-        for (int i = 0; i < enemyTankNum; i++) {
-            //创建对象
-            EnemyTank enemyTank = new EnemyTank((100 * (i + 1)), 0);
-            //设置方向
-            enemyTank.setDirection(1);
+        if (enemyTanks.size() == 0) {
+            //如果敌人坦克集合中没有对象，创建敌人的坦克
+            for (int i = 0; i < enemyTankNum; i++) {
+                //创建对象
+                EnemyTank enemyTank = new EnemyTank((100 * (i + 1)), 0);
+                //设置方向
+                enemyTank.setDirection(1);
 
-            //启动线程让敌人坦克移动
-            new Thread(enemyTank).start();
+                //启动线程让敌人坦克移动
+                new Thread(enemyTank).start();
 
-            //添加到集合中
-            enemyTanks.add(enemyTank);
+                //添加到集合中
+                enemyTanks.add(enemyTank);
+            }
         }
     }
+
+
+    /**
+     * 显示战斗信息
+     *
+     * @param g 画笔
+     */
+    public void showBattleInfo(Graphics g) {
+        //设置画笔颜色
+        g.setColor(Color.black);
+        //字体
+        g.setFont(new Font("宋体", Font.BOLD, 25));
+        //显示文字
+        g.drawString("你击毁的坦克", 1020, 30);
+        //画出敌人坦克
+        drawTank(1020, 60, g, 0, 1);
+        //重新设置画笔颜色
+        g.setColor(Color.black);
+        //画出个数
+        g.drawString(String.valueOf(BattleInfo.getDefeatEnemyTankNum()), 1080, 100);
+    }
+
+    /**
+     * 显示其他信息
+     *
+     * @param g 画笔
+     */
+    public void showOtherInfo(Graphics g) {
+        //设置画笔颜色
+        g.setColor(Color.black);
+        //字体
+        g.setFont(new Font("宋体", Font.BOLD, 15));
+        //显示文字
+        g.drawString("移动：英文输入法下的 W S A D ", 10, 780);
+        g.drawString("攻击：英文输入法下的 J ", 10, 800);
+
+    }
+
 
     /**
      * @param g 画笔
@@ -62,6 +117,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         super.paint(g);
         //填充矩形，默认黑色
         g.fillRect(0, 0, 1000, 750);
+
+        //显示战斗信息
+        showBattleInfo(g);
+        //显示其他信息
+        showOtherInfo(g);
 
         //如果玩家的坦克存活、画出玩家自己的坦克
         if (myTank != null && myTank.isLive())
@@ -286,6 +346,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     //将被击中的敌人坦克从集合中移除
                     if (tank instanceof EnemyTank) {
                         enemyTanks.remove(tank);
+                        //玩家击败坦克数量+1
+                        BattleInfo.addDefeatEnemyTank();
                     }
 
                     //创建一个Bomb对象，加入到bombs集合中
@@ -305,6 +367,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     //将被击中的敌人坦克从集合中移除
                     if (tank instanceof EnemyTank) {
                         enemyTanks.remove(tank);
+                        //玩家击败坦克数量+1
+                        BattleInfo.addDefeatEnemyTank();
                     }
 
                     //创建一个Bomb对象，加入到bombs集合中

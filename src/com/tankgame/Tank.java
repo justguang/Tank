@@ -37,10 +37,10 @@ public class Tank {
         this.y = y;
     }
 
-    public Tank(int x, int y, int speed) {
+    public Tank(int x, int y, int direction) {
         this.x = x;
         this.y = y;
-        this.speed = speed;
+        this.direction = direction;
     }
 
     /**
