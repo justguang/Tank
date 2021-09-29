@@ -8,7 +8,7 @@ import java.util.Vector;
 
 /**
  * @author justguang
- * @version 1.0
+ * @version 1.1
  * @date 2021/9/25
  * @description 坦克大战的绘图区域
  */
@@ -21,7 +21,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public static Vector<EnemyTank> enemyTanks = new Vector<>();
 
     //定义敌人数量【默认4架坦克】
-    public static int enemyTankNum = 4;
+    public static int enemyTankNum = 5;
 
     //存放炸弹集合
     Vector<Bomb> bombs = new Vector<>();
@@ -31,25 +31,37 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     Image bombImg2 = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/static/2.png"));
     Image bombImg3 = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/static/3.png"));
 
-    {
-        //加载战斗记录
-        BattleInfo.checkBattleRecordFileExists();
-        BattleInfo.loadBattleRecord();
+    public MyPanel() {
+
     }
 
-    public MyPanel(String key) {
-        //key=> 1开始新游戏，
-        if (key.equals("1")) {
+    /**
+     * 开始游戏
+     *
+     * @param isNewGame true=>新游戏，false=>继续之前的游戏战斗
+     */
+    public void startGame(boolean isNewGame) {
+
+        //检测加载的文件
+        BattleInfo.checkBattleRecordFileExists();
+
+        //isNewGame => true开始新游戏， false继续之前的游戏
+        if (isNewGame) {
             myTank = null;
-            enemyTankNum = 4;
+            enemyTankNum = 5;
             enemyTanks.clear();
+        } else {
+
+            //加载战斗记录
+            BattleInfo.loadBattleRecord();
         }
 
 
-        if (myTank == null) {
+        if (myTank == null || !myTank.isLive()) {
             //如果玩家坦克为空，创建玩家的坦克
             myTank = new CustomTank(500, 600);
         }
+
         //设置玩家的坦克移速
         myTank.setSpeed(6);
 
@@ -115,8 +127,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+
         //填充矩形，默认黑色
         g.fillRect(0, 0, 1000, 750);
+
 
         //显示战斗信息
         showBattleInfo(g);
@@ -127,15 +141,17 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         if (myTank != null && myTank.isLive())
             drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
 
-        //画出玩家的子弹
-        for (int i = 0; i < myTank.shots.size(); i++) {
-            g.setColor(Color.orange);
-            Shot shot = myTank.shots.get(i);
-            if (shot != null && shot.isLive()) {
-                g.fill3DRect(shot.getX(), shot.getY(), 3, 3, false);
-            } else {
-                //移除已销毁的子弹
-                myTank.shots.remove(shot);
+        if (myTank != null && myTank.shots != null) {
+            //画出玩家的子弹
+            for (int i = 0; i < myTank.shots.size(); i++) {
+                g.setColor(Color.orange);
+                Shot shot = myTank.shots.get(i);
+                if (shot != null && shot.isLive()) {
+                    g.fill3DRect(shot.getX(), shot.getY(), 3, 3, false);
+                } else {
+                    //移除已销毁的子弹
+                    myTank.shots.remove(shot);
+                }
             }
         }
 
@@ -392,6 +408,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
      */
     @Override
     public void keyPressed(KeyEvent e) {
+        if (myTank == null || !myTank.isLive()) return;
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 //修改方向
@@ -438,7 +455,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         while (true) {
 
             try {
-                Thread.sleep(80);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -501,7 +518,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     }
                 }
 
-                if (tank instanceof EnemyTank) {
+                if (tank instanceof EnemyTank && myTank.isLive()) {
                     //如果该移动的坦克是敌人坦克，就要判断与玩家的坦克是否重叠
                     if (myTank.getDirection() == 0 || myTank.getDirection() == 1) {
                         //玩家坦克朝向是上下
@@ -556,7 +573,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     }
                 }
 
-                if (tank instanceof EnemyTank) {
+                if (tank instanceof EnemyTank && myTank.isLive()) {
                     //如果该移动的坦克是敌人坦克，就要判断与玩家的坦克是否重叠
                     if (myTank.getDirection() == 0 || myTank.getDirection() == 1) {
                         //玩家坦克朝向是上下
@@ -611,7 +628,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     }
                 }
 
-                if (tank instanceof EnemyTank) {
+                if (tank instanceof EnemyTank && myTank.isLive()) {
                     //如果该移动的坦克是敌人坦克，就要判断与玩家的坦克是否重叠
                     if (myTank.getDirection() == 0 || myTank.getDirection() == 1) {
                         //玩家坦克朝向是上下
@@ -666,7 +683,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     }
                 }
 
-                if (tank instanceof EnemyTank) {
+                if (tank instanceof EnemyTank && myTank.isLive()) {
                     //如果该移动的坦克是敌人坦克，就要判断与玩家的坦克是否重叠
                     if (myTank.getDirection() == 0 || myTank.getDirection() == 1) {
                         //玩家坦克朝向是上下

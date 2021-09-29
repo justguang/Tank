@@ -61,7 +61,7 @@ public class BattleInfo {
 
         //判断战斗记录文件是否存在
         if (file != null && file.exists() && file.isFile()) {
-            System.out.println("战斗记录文件存在，开始读取战斗记录……");
+            System.out.println("战斗记录文件存在");
             isExists = true;
         }
 
@@ -152,6 +152,10 @@ public class BattleInfo {
      */
     public static void saveBattleInfo() {
 
+        if (battleRecordFilePath == null) {
+            System.out.println("没有保存战斗数据");
+            return;
+        }
         try {
 
             //加载properties文件

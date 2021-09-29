@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 /**
  * @author justguang
- * @version 1.0
+ * @version 1.1
  * @date 2021/9/27
  * @description 播放音频
  * PS：引入jlayer包，下载网址【https://mvnrepository.com/artifact/javazoom/jlayer】

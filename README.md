@@ -49,19 +49,17 @@
 
 
 
-
-### [Tank_v1.1]() 
+### [Tank_v1.1](https://github.com/justguang/Tank/releases/tag/Tank_v1.1) 
 实现功能：
 1. 新增几种背景音乐随机循环播放。
-2. 新增战场数据保存、继续上局战斗。
-3. 新增战场上的坦克之间不重叠。
-4. 修改子弹、坦克的运动速度。
+2. 新增战场上的坦克之间不重叠。
+3. 修改子弹、坦克的运动速度。
 
 技术支持：
 1. 使用 java.util.concurrent.atomic包下的 CAS功能与守护线程配合 实现循环监听bgm，
 并依赖外部包 [jlayer-1.0.1.jar](https://mvnrepository.com/artifact/javazoom/jlayer)
 与Math下的随机功能，实现随机播放bgm。
-2. 使用 java.io包下的 I/O流技术 读写文件。
+2. 使用 java.io包下的 I/O流技术 读写文件，实现战斗数据保存和加载。
 3. 使用线程安全数据+泛型+逻辑判断，纯坐标计算实现坦克至之间不重叠。
 
 <br/>
@@ -80,3 +78,24 @@
 <br/>
 <br/>
 <br/>
+
+
+### [Tank_v1.2](https://github.com/justguang/Tank/releases/tag/Tank_v1.2) 
+对比Tank_v1.1区别：
+1. 实现继续游戏、新游戏功能
+2. 添加游戏标题
+
+<br/>
+
+《坦克大战 v1.2》展示图：
+
+<img src="https://img2020.cnblogs.com/blog/2518177/202109/2518177-20210929122838695-111929703.png" alt="展示图1" style="zoom:50%;" />
+
+<br/>
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+**********************************************************************

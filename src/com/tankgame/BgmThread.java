@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author justguang
- * @version 1.0
+ * @version 1.1
  * @date 2021/9/27
  * @description 用于监视背景音乐是否关闭，如果关闭就重新播放背景音乐，此为守护线程
  */
