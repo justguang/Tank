@@ -1,5 +1,5 @@
 # Tank
-自己编写的一个Java小游戏，《塔克大战》，仅供学习参考
+一个Java小游戏，《塔克大战》,感谢韩顺平老师相关教程资料
 
 
 ### [Tank_v1.0](https://github.com/justguang/Tank/releases/tag/Tank_v1.0) 
